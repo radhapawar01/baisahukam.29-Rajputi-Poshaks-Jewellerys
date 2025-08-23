@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · baisahukam.29</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    ::-webkit-scrollbar{width:10px}
+    ::-webkit-scrollbar-thumb{background:#9f1239;border-radius:10px}
+  </style>
+</head>
+<body class="bg-gradient-to-b from-pink-50 via-pink-100 to-pink-200 min-h-screen font-sans text-gray-800">
+
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="container mx-auto p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-pink-200 rounded-lg flex items-center justify-center shadow">
+          <img src="./logo.png" class="object-contain max-w-12 max-h-12" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ad0ccf51-0b35-4ef0-a339-5ffc12d6e356.png'">
+        </div>
+        <div>
+          <div class="text-xl font-extrabold text-rose-800">baisahukam.29</div>
+          <div class="text-pink-700 text-xs font-semibold tracking-wide">ADMIN PANEL</div>
+        </div>
+      </div>
+      <a href="./index.html" class="text-rose-700 hover:text-rose-900 font-semibold">← Back to website</a>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+
+    <!-- LOGIN CARD -->
+    <section id="loginCard" class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
+      <h2 class="text-3xl font-extrabold text-center text-rose-800 mb-6">Admin Login</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-rose-700 mb-1">Email</label>
+          <input id="loginEmail" type="email" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="admin@example.com">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-rose-700 mb-1">Password</label>
+          <input id="loginPass" type="password" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="Your Firebase Auth password">
+        </div>
+        <button id="btnLogin" class="w-full bg-rose-700 hover:bg-rose-800 text-white font-bold py-3 rounded-lg">Login</button>
+        <p id="loginMsg" class="text-center text-red-600 text-sm mt-2"></p>
+        <p class="text-center text-xs text-gray-500 mt-4">Tip: Use Firebase Authentication (Email/Password). Add your admin email to ALLOWED_ADMINS below.</p>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dash" class="hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 flex items-center justify-between">
+        <div>
+          <h3 class="text-2xl font-extrabold text-rose-800">Welcome, <span id="adminEmail" class="text-rose-600"></span></h3>
+          <p class="text-gray-600">Manage categories, products and customer gallery.</p>
+        </div>
+        <button id="btnLogout" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg"><i class="fa fa-right-from-bracket mr-2"></i>Logout</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="mt-8">
+        <div class="flex gap-3">
+          <button data-tab="tabCats" class="tab-btn bg-rose-700 text-white px-4 py-2 rounded-lg">Categories</button>
+          <button data-tab="tabProducts" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Products</button>
+          <button data-tab="tabGallery" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Customer Gallery</button>
+        </div>
+
+        <!-- Categories -->
+        <div id="tabCats" class="tab mt-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <form id="catForm" class="bg-white rounded-xl shadow p-5 space-y-4">
+              <input type="hidden" id="catId">
+              <h4 class="font-bold text-rose-800 text-xl">Add / Edit Category</h4>
+              <div>
+                <label class="block text-sm font-medium text-rose-700 mb-1">Name</label>
+                <input id="catName" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="RAJPUTI POSHAKS">
+              </div>
+              <button class="bg-rose-700 hover:bg-rose-800 text-white px-4 py-2 rounded-lg w-full">Save Category</button>
+              <p id="catMsg" class="text-center text-green-700 text-sm"></p>
+            </form>
+
+            <div class="bg-white rounded-xl shadow p-5">
+              <h4 class="font-bold text-rose-800 text-xl mb-3">All Categories</h4>
+              <ul id="catList" class="divide-y divide-rose-100"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div id="tabProducts" class="tab hidden mt-6">
+          <div class="bg-white rounded-xl shadow p-5 space-y-4">
+            <form id="prodForm" class="space-y-4">
+              <input type="hidden" id="prodId">
+              <h4 class="font-bold text-rose-800 text-xl">Add / Edit Product</h4>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Name</label>
+                  <input id="prodName" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="Bridal Rajputi Poshak – Maroon">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Category</label>
+                  <select id="prodCat" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600"></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-rose-700 mb-1">Description</label>
+                <textarea id="prodDesc" rows="3" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600"></textarea>
+              </div>
+              <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">MRP (₹)</label>
+                  <input id="prodMRP" type="number" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="14999">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Selling Price (₹)</label>
+                  <input id="prodPrice" type="number" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="10999">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Image URLs (comma separated)</label>
+                  <input id="prodImages" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="https://..., https://..., https://...">
+                </div>
+              </div>
+              <button class="bg-rose-700 hover:bg-rose-800 text-white px-4 py-2 rounded-lg w-full">Save Product</button>
+              <p id="prodMsg" class="text-center text-green-700 text-sm"></p>
+            </form>
+
+            <div>
+              <h4 class="font-bold text-rose-800 text-xl mb-3">All Products</h4>
+              <div id="prodList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        <div id="tabGallery" class="tab hidden mt-6">
+          <div class="bg-white rounded-xl shadow p-5 space-y-4">
+            <form id="galForm" class="space-y-4">
+              <input type="hidden" id="galId">
+              <h4 class="font-bold text-rose-800 text-xl">Add / Edit Gallery Item</h4>
+              <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Type</label>
+                  <select id="galType" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600">
+                    <option value="image">Image</option>
+                    <option value="video">Video (mp4)</option>
+                  </select>
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-rose-700 mb-1">URL</label>
+                  <input id="galUrl" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="https://...">
+                </div>
+              </div>
+              <button class="bg-rose-700 hover:bg-rose-800 text-white px-4 py-2 rounded-lg w-full">Save Item</button>
+              <p id="galMsg" class="text-center text-green-700 text-sm"></p>
+            </form>
+
+            <div>
+              <h4 class="font-bold text-rose-800 text-xl mb-3">All Media</h4>
+              <div id="galList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <button id="lightboxClose" class="absolute top-4 right-4 text-white text-3xl">&times;</button>
+    <img id="lightboxImg" class="max-w-4xl w-full h-auto rounded-lg shadow-2xl" />
+  </div>
+
+  <!-- Firebase Admin JS -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // ======= PASTE YOUR REAL CONFIG HERE (Firebase Console → SDK setup → Config) =======
+    //const firebaseConfig = {
+    //  apiKey: "YOUR_API_KEY",
+     // authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+     // projectId: "YOUR_PROJECT_ID",
+     // storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    //  messagingSenderId: "SENDER_ID",
+    //  appId: "APP_ID",
+     // measurementId: "G-XXXX"
+    //};
+    // ====================================================================================
+
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyDYvcJWPbAm_JmxdC1FsrNVHErGE2BRaq4",
+        authDomain: "baisahukam29-671b7.firebaseapp.com",
+        projectId: "baisahukam29-671b7",
+        storageBucket: "baisahukam29-671b7.firebasestorage.app",
+        messagingSenderId: "739170617453",
+        appId: "1:739170617453:web:a18d21c5bd083fc8dcd764",
+        measurementId: "G-6DSMPFB7CF"
+    };
+
+    // Restrict dashboard to these emails
+    const ALLOWED_ADMINS = ["baisahukam.29@gmail.com"]; // <-- add more if needed
+
+    // UI refs
+    const loginCard = document.getElementById('loginCard');
+    const dash = document.getElementById('dash');
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPass = document.getElementById('loginPass');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnLogout = document.getElementById('btnLogout');
+    const loginMsg = document.getElementById('loginMsg');
+    const adminEmail = document.getElementById('adminEmail');
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabs = document.querySelectorAll('.tab');
+    tabBtns.forEach(b=>b.addEventListener('click',()=>{
+      tabBtns.forEach(x=>x.classList.remove('bg-rose-700','text-white'));
+      tabBtns.forEach(x=>x.classList.add('bg-white','text-rose-700','border','border-rose-300'));
+      b.classList.remove('bg-white','text-rose-700','border','border-rose-300');
+      b.classList.add('bg-rose-700','text-white');
+      tabs.forEach(t=>t.classList.add('hidden'));
+      document.getElementById(b.dataset.tab).classList.remove('hidden');
+    }));
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const openLightbox = (src)=>{ lightboxImg.src=src; lightbox.classList.remove('hidden'); lightbox.classList.add('flex'); };
+    const closeLightbox = ()=>{ lightbox.classList.add('hidden'); lightbox.classList.remove('flex'); lightboxImg.src=""; };
+    lightboxClose.onclick = closeLightbox; lightbox.onclick=(e)=>{ if(e.target===lightbox) closeLightbox(); };
+
+    // Firebase
+    let app, auth, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+    } catch (e) {
+      loginMsg.textContent = "Firebase: Error (invalid config).";
+      console.error(e);
+    }
+
+    // Auth guard
+    onAuthStateChanged(auth, (user)=>{
+      if(user && ALLOWED_ADMINS.includes(user.email)){
+        adminEmail.textContent = user.email;
+        loginCard.classList.add('hidden');
+        dash.classList.remove('hidden');
+        refreshAll();
+      } else {
+        dash.classList.add('hidden');
+        loginCard.classList.remove('hidden');
+      }
+    });
+
+    btnLogin.onclick = async ()=>{
+      loginMsg.textContent = "";
+      try{
+        await signInWithEmailAndPassword(auth, loginEmail.value.trim(), loginPass.value);
+      }catch(err){
+        loginMsg.textContent = err.message.replace('Firebase:','').trim();
+      }
+    };
+    btnLogout.onclick = ()=> signOut(auth);
+
+    // ===== CATEGORIES =====
+    const catForm = document.getElementById('catForm');
+    const catId = document.getElementById('catId');
+    const catName = document.getElementById('catName');
+    const catList = document.getElementById('catList');
+    const catMsg = document.getElementById('catMsg');
+
+    async function loadCategories(){
+      catList.innerHTML = `<li class="py-4 text-center text-gray-400">Loading...</li>`;
+      const snap = await getDocs(collection(db,'categories'));
+      const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      catList.innerHTML = items.map(c=>`
+        <li class="py-3 flex items-center justify-between">
+          <span class="font-semibold text-rose-800">${c.name}</span>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 rounded bg-rose-100 text-rose-700" data-edit="${c.id}" data-name="${c.name}"><i class="fa fa-pen"></i></button>
+            <button class="px-3 py-1 rounded bg-red-100 text-red-700" data-del="${c.id}"><i class="fa fa-trash"></i></button>
+          </div>
+        </li>`).join('') || `<li class="py-4 text-center text-gray-400">No categories yet.</li>`;
+
+      // bind
+      catList.querySelectorAll('[data-edit]').forEach(btn=>{
+        btn.onclick = ()=>{ catId.value = btn.dataset.edit; catName.value = btn.dataset.name; catName.focus(); };
+      });
+      catList.querySelectorAll('[data-del]').forEach(btn=>{
+        btn.onclick = async ()=>{
+          if(confirm('Delete this category?')){ await deleteDoc(doc(db,'categories',btn.dataset.del)); loadCategories(); loadProdCats(); }
+        };
+      });
+    }
+
+    catForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const name = catName.value.trim();
+      if(!name) return;
+      try{
+        if(catId.value){
+          await updateDoc(doc(db,'categories',catId.value), {name});
+          catMsg.textContent = 'Category updated.';
+        }else{
+          await addDoc(collection(db,'categories'), {name});
+          catMsg.textContent = 'Category added.';
+        }
+        catForm.reset(); setTimeout(()=>catMsg.textContent='',1500);
+        loadCategories(); loadProdCats();
+      }catch(err){ catMsg.textContent = err.message; }
+    });
+
+    // ===== PRODUCTS =====
+    const prodForm = document.getElementById('prodForm');
+    const prodId = document.getElementById('prodId');
+    const prodName = document.getElementById('prodName');
+    const prodCat = document.getElementById('prodCat');
+    const prodDesc = document.getElementById('prodDesc');
+    const prodMRP = document.getElementById('prodMRP');
+    const prodPrice = document.getElementById('prodPrice');
+    const prodImages = document.getElementById('prodImages');
+    const prodMsg = document.getElementById('prodMsg');
+    const prodList = document.getElementById('prodList');
+
+    async function loadProdCats(){
+      const snap = await getDocs(collection(db,'categories'));
+      const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      prodCat.innerHTML = items.map(c=>`<option value="${c.id}">${c.name}</option>`).join('') || '<option disabled>No categories</option>';
+    }
+
+    async function loadProducts(){
+      prodList.innerHTML = `<div class="text-center text-gray-400">Loading...</div>`;
+      const snap = await getDocs(collection(db,'products'));
+      const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      prodList.innerHTML = items.map(p=>{
+        const img = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1542718610-a1d656d1884b?auto=format&fit=crop&w=600&q=60';
+        return `<div class="bg-white rounded-xl shadow p-3">
+          <img src="${img}" class="w-full h-40 object-cover rounded cursor-zoom-in" onclick="(${openLightbox})(this.src)">
+          <div class="mt-2 font-semibold text-rose-800">${p.name}</div>
+          <div class="text-sm text-gray-600">₹<s>${Number(p.mrp||0).toLocaleString()}</s> <span class="text-rose-700 font-bold">₹${Number(p.price||0).toLocaleString()}</span></div>
+          <div class="flex gap-2 mt-2">
+            <button class="px-3 py-1 bg-rose-100 text-rose-700 rounded" data-editp='${JSON.stringify(p).replace(/"/g,'&quot;')}'><i class="fa fa-pen"></i></button>
+            <button class="px-3 py-1 bg-red-100 text-red-700 rounded" data-delp="${p.id}"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('') || `<div class="text-center text-gray-400">No products yet.</div>`;
+
+      prodList.querySelectorAll('[data-editp]').forEach(btn=>{
+        btn.onclick = ()=>{
+          const p = JSON.parse(btn.dataset.editp);
+          prodId.value = p.id;
+          prodName.value = p.name||'';
+          prodCat.value = p.categoryId||'';
+          prodDesc.value = p.description||'';
+          prodMRP.value = p.mrp||'';
+          prodPrice.value = p.price||'';
+          prodImages.value = (p.images||[]).join(', ');
+          window.scrollTo({top:prodForm.offsetTop-80, behavior:'smooth'});
+        };
+      });
+      prodList.querySelectorAll('[data-delp]').forEach(btn=>{
+        btn.onclick = async()=>{
+          if(confirm('Delete this product?')){ await deleteDoc(doc(db,'products',btn.dataset.delp)); loadProducts(); }
+        };
+      });
+    }
+
+    prodForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = {
+        name: prodName.value.trim(),
+        categoryId: prodCat.value,
+        description: prodDesc.value.trim(),
+        mrp: Number(prodMRP.value||0),
+        price: Number(prodPrice.value||0),
+        images: prodImages.value.split(',').map(s=>s.trim()).filter(Boolean)
+      };
+      try{
+        if(prodId.value){
+          await updateDoc(doc(db,'products',prodId.value), payload);
+          prodMsg.textContent = 'Product updated.';
+        } else {
+          await addDoc(collection(db,'products'), payload);
+          prodMsg.textContent = 'Product added.';
+        }
+        prodForm.reset(); setTimeout(()=>prodMsg.textContent='',1500);
+        loadProducts();
+      }catch(err){ prodMsg.textContent = err.message; }
+    });
+
+    // ===== GALLERY =====
+    const galForm = document.getElementById('galForm');
+    const galId = document.getElementById('galId');
+    const galType = document.getElementById('galType');
+    const galUrl = document.getElementById('galUrl');
+    const galMsg = document.getElementById('galMsg');
+    const galList = document.getElementById('galList');
+
+    async function loadGallery(){
+      galList.innerHTML = `<div class="text-center text-gray-400">Loading...</div>`;
+      const snap = await getDocs(collection(db,'gallery'));
+      const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      galList.innerHTML = items.map(m=>{
+        const preview = m.type==='video'
+          ? `<video class="w-full h-40 object-cover rounded" controls><source src="${m.url}" type="video/mp4"></video>`
+          : `<img src="${m.url}" class="w-full h-40 object-cover rounded cursor-zoom-in" onclick="(${openLightbox})(this.src)">`;
+        return `<div class="bg-white rounded-xl shadow p-3">
+          ${preview}
+          <div class="mt-2 text-sm text-gray-600">${m.type.toUpperCase()}</div>
+          <div class="flex gap-2 mt-2">
+            <button class="px-3 py-1 bg-rose-100 text-rose-700 rounded" data-editg='${JSON.stringify(m).replace(/"/g,'&quot;')}'><i class="fa fa-pen"></i></button>
+            <button class="px-3 py-1 bg-red-100 text-red-700 rounded" data-delg="${m.id}"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('') || `<div class="text-center text-gray-400">No media yet.</div>`;
+
+      galList.querySelectorAll('[data-editg]').forEach(btn=>{
+        btn.onclick = ()=>{
+          const m = JSON.parse(btn.dataset.editg);
+          galId.value = m.id; galType.value = m.type; galUrl.value = m.url;
+          window.scrollTo({top:galForm.offsetTop-80, behavior:'smooth'});
+        };
+      });
+      galList.querySelectorAll('[data-delg]').forEach(btn=>{
+        btn.onclick = async()=>{
+          if(confirm('Delete this item?')){ await deleteDoc(doc(db,'gallery',btn.dataset.delg)); loadGallery(); }
+        };
+      });
+    }
+
+    galForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = { type: galType.value, url: galUrl.value.trim() };
+      try{
+        if(galId.value){
+          await updateDoc(doc(db,'gallery',galId.value), payload);
+          galMsg.textContent = 'Item updated.';
+        } else {
+          await addDoc(collection(db,'gallery'), payload);
+          galMsg.textContent = 'Item added.';
+        }
+        galForm.reset(); setTimeout(()=>galMsg.textContent='',1500);
+        loadGallery();
+      }catch(err){ galMsg.textContent = err.message; }
+    });
+
+    // Refresh all lists
+    async function refreshAll(){
+      await loadCategories();
+      await loadProdCats();
+      await loadProducts();
+      await loadGallery();
+    }
+  </script>
+</body>
+</html>

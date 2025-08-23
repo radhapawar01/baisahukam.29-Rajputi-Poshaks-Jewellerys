@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>baisahukam.29 | Rajputi Poshaks & Jewellery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gradient-to-b from-pink-50 via-pink-100 to-pink-200 min-h-screen flex flex-col text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50 p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-extrabold text-rose-800">baisahukam.29</h1>
+    <nav class="space-x-4">
+      <a href="#collections" class="text-rose-700 font-semibold">Collections</a>
+      <a href="#about-us" class="text-rose-700 font-semibold">About</a>
+      <a href="#gallery" class="text-rose-700 font-semibold">Gallery</a>
+      <a href="admin.html" class="bg-rose-600 text-white px-3 py-1 rounded">Admin</a>
+    </nav>
+  </header>
+
+  <!-- Products -->
+  <section id="collections" class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold text-rose-800 mb-6 text-center">Our Royal Collections</h2>
+    <div id="productsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold text-rose-800 mb-6 text-center">Customer Gallery</h2>
+    <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+  </section>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // TODO: Replace with your config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Load products
+    async function loadProducts() {
+      const container = document.getElementById("productsContainer");
+      container.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "products"));
+      querySnapshot.forEach((doc) => {
+        const p = doc.data();
+        const firstImage = p.images && p.images.length ? p.images[0] : "https://via.placeholder.com/300";
+        container.innerHTML += `
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+            <img src="${firstImage}" alt="${p.name}" class="w-full h-48 object-cover cursor-pointer" onclick="window.open('${firstImage}','_blank')">
+            <div class="p-4">
+              <h3 class="text-xl font-bold text-rose-700">${p.name}</h3>
+              <p class="text-gray-600 text-sm mb-2">${p.description || ""}</p>
+              <p class="text-gray-500 line-through">₹${p.mrp}</p>
+              <p class="text-rose-700 text-lg font-bold">₹${p.price}</p>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Load gallery
+    async function loadGallery() {
+      const container = document.getElementById("galleryContainer");
+      container.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "gallery"));
+      querySnapshot.forEach((doc) => {
+        const g = doc.data();
+        if (g.type === "video") {
+          container.innerHTML += `<video controls class="w-full h-48 rounded-lg"><source src="${g.url}" type="video/mp4"></video>`;
+        } else {
+          container.innerHTML += `<img src="${g.url}" class="w-full h-48 object-cover rounded-lg cursor-pointer" onclick="window.open('${g.url}','_blank')">`;
+        }
+      });
+    }
+
+    loadProducts();
+    loadGallery();
+  </script>
+</body>
+</html>
