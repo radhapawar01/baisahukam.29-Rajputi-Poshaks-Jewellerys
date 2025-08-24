@@ -36,15 +36,15 @@
       <div class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-rose-700 mb-1">Email</label>
-          <input id="loginEmail" type="email" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="admin@example.com">
+          <input id="loginEmail" type="email" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="admin_email@gmail.com">
         </div>
         <div>
           <label class="block text-sm font-medium text-rose-700 mb-1">Password</label>
-          <input id="loginPass" type="password" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="Your Firebase Auth password">
+          <input id="loginPass" type="password" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="Admin Password">
         </div>
         <button id="btnLogin" class="w-full bg-rose-700 hover:bg-rose-800 text-white font-bold py-3 rounded-lg">Login</button>
         <p id="loginMsg" class="text-center text-red-600 text-sm mt-2"></p>
-        <p class="text-center text-xs text-gray-500 mt-4">Tip: Use Firebase Authentication (Email/Password). Add your admin email to ALLOWED_ADMINS below.</p>
+        <p class="text-center text-xs text-gray-500 mt-4">Tip:- Only Admin can Login Here!! </p>
       </div>
     </section>
 
@@ -53,7 +53,7 @@
       <div class="bg-white rounded-2xl shadow-xl p-6 flex items-center justify-between">
         <div>
           <h3 class="text-2xl font-extrabold text-rose-800">Welcome, <span id="adminEmail" class="text-rose-600"></span></h3>
-          <p class="text-gray-600">Manage categories, products and customer gallery.</p>
+          <p class="text-gray-600">Manage categories, products, customer gallery & customer orders.</p>
         </div>
         <button id="btnLogout" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg"><i class="fa fa-right-from-bracket mr-2"></i>Logout</button>
       </div>
@@ -64,6 +64,7 @@
           <button data-tab="tabCats" class="tab-btn bg-rose-700 text-white px-4 py-2 rounded-lg">Categories</button>
           <button data-tab="tabProducts" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Products</button>
           <button data-tab="tabGallery" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Customer Gallery</button>
+          <button data-tab="tabOrders" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Customer Orders</button>
         </div>
 
         <!-- Categories -->
@@ -146,10 +147,15 @@
                     <option value="video">Video (mp4)</option>
                   </select>
                 </div>
-                <div class="md:col-span-2">
+               <!-- <div class="md:col-span-2">
                   <label class="block text-sm font-medium text-rose-700 mb-1">URL</label>
                   <input id="galUrl" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="https://...">
+                </div> -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-rose-700 mb-1">Upload File</label>
+                    <input type="file" id="galFile" accept="image/*,video/*" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600">
                 </div>
+
               </div>
               <button class="bg-rose-700 hover:bg-rose-800 text-white px-4 py-2 rounded-lg w-full">Save Item</button>
               <p id="galMsg" class="text-center text-green-700 text-sm"></p>
@@ -160,6 +166,12 @@
               <div id="galList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
           </div>
+        </div>
+
+        <!-- Customer Orders -->
+
+        <div>
+          
         </div>
       </div>
     </section>
@@ -459,3 +471,4 @@
   </script>
 </body>
 </html>
+
