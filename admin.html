@@ -60,7 +60,7 @@
 
       <!-- Tabs -->
       <div class="mt-8">
-        <div class="flex gap-3">
+        <div class="flex gap-3 flex-wrap">
           <button data-tab="tabCats" class="tab-btn bg-rose-700 text-white px-4 py-2 rounded-lg">Categories</button>
           <button data-tab="tabProducts" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Products</button>
           <button data-tab="tabGallery" class="tab-btn bg-white text-rose-700 border border-rose-300 px-4 py-2 rounded-lg">Customer Gallery</button>
@@ -108,7 +108,7 @@
                 <label class="block text-sm font-medium text-rose-700 mb-1">Description</label>
                 <textarea id="prodDesc" rows="3" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600"></textarea>
               </div>
-              <div class="grid md:grid-cols-3 gap-4">
+              <div class="grid md:grid-cols-4 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-rose-700 mb-1">MRP (₹)</label>
                   <input id="prodMRP" type="number" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="14999">
@@ -118,8 +118,16 @@
                   <input id="prodPrice" type="number" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="10999">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-rose-700 mb-1">Image URLs (comma separated)</label>
-                  <input id="prodImages" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="https://..., https://..., https://...">
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Stock</label>
+                  <select id="prodStock" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600">
+                    <option value="1">In Stock</option>
+                    <option value="0">Out of Stock</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Upload Images</label>
+                  <input id="prodFiles" type="file" accept="image/*" multiple class="w-full border border-rose-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-rose-600">
+                  <p class="text-xs text-gray-500 mt-1">You can select multiple images.</p>
                 </div>
               </div>
               <button class="bg-rose-700 hover:bg-rose-800 text-white px-4 py-2 rounded-lg w-full">Save Product</button>
@@ -147,15 +155,14 @@
                     <option value="video">Video (mp4)</option>
                   </select>
                 </div>
-               <!-- <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-rose-700 mb-1">URL</label>
-                  <input id="galUrl" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="https://...">
-                </div> -->
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-rose-700 mb-1">Upload File</label>
-                    <input type="file" id="galFile" accept="image/*,video/*" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600">
+                  <label class="block text-sm font-medium text-rose-700 mb-1">Upload File</label>
+                  <input type="file" id="galFile" accept="image/*,video/*" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600">
                 </div>
-
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-rose-700 mb-1">Comment (optional)</label>
+                <input id="galComment" class="w-full border border-rose-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600" placeholder="Say something about this media...">
               </div>
               <button class="bg-rose-700 hover:bg-rose-800 text-white px-4 py-2 rounded-lg w-full">Save Item</button>
               <p id="galMsg" class="text-center text-green-700 text-sm"></p>
@@ -169,8 +176,31 @@
         </div>
 
         <!-- Customer Orders -->
-          
+        <div id="tabOrders" class="tab hidden mt-6">
+          <div class="bg-white rounded-xl shadow p-5">
+            <h4 class="font-bold text-rose-800 text-xl mb-3">Customer Orders</h4>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead>
+                  <tr class="bg-rose-100 text-rose-800">
+                    <th class="px-3 py-2 text-left">Date & Time</th>
+                    <th class="px-3 py-2 text-left">Customer</th>
+                    <th class="px-3 py-2 text-left">Phone</th>
+                    <th class="px-3 py-2 text-left">Address</th>
+                    <th class="px-3 py-2 text-left">Product</th>
+                    <th class="px-3 py-2 text-left">Price</th>
+                    <th class="px-3 py-2 text-left">Final</th>
+                    <th class="px-3 py-2 text-left">Discount</th>
+                    <th class="px-3 py-2"></th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTbody"></tbody>
+              </table>
+            </div>
+            <p id="ordersMsg" class="text-center text-gray-500 text-sm mt-3"></p>
+          </div>
         </div>
+
       </div>
     </section>
   </main>
@@ -184,34 +214,21 @@
   <!-- Firebase Admin JS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-    // ======= PASTE YOUR REAL CONFIG HERE (Firebase Console → SDK setup → Config) =======
-    //const firebaseConfig = {
-    //  apiKey: "YOUR_API_KEY",
-     // authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-     // projectId: "YOUR_PROJECT_ID",
-     // storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    //  messagingSenderId: "SENDER_ID",
-    //  appId: "APP_ID",
-     // measurementId: "G-XXXX"
-    //};
-    // ====================================================================================
-
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-        apiKey: "AIzaSyDYvcJWPbAm_JmxdC1FsrNVHErGE2BRaq4",
-        authDomain: "baisahukam29-671b7.firebaseapp.com",
-        projectId: "baisahukam29-671b7",
-        storageBucket: "baisahukam29-671b7.firebasestorage.app",
-        messagingSenderId: "739170617453",
-        appId: "1:739170617453:web:a18d21c5bd083fc8dcd764",
-        measurementId: "G-6DSMPFB7CF"
+      apiKey: "AIzaSyDYvcJWPbAm_JmxdC1FsrNVHErGE2BRaq4",
+      authDomain: "baisahukam29-671b7.firebaseapp.com",
+      projectId: "baisahukam29-671b7",
+      storageBucket: "baisahukam29-671b7.firebasestorage.app",
+      messagingSenderId: "739170617453",
+      appId: "1:739170617453:web:a18d21c5bd083fc8dcd764",
+      measurementId: "G-6DSMPFB7CF"
     };
 
-    // Restrict dashboard to these emails
-    const ALLOWED_ADMINS = ["baisahukam.29@gmail.com"]; // <-- add more if needed
+    const ALLOWED_ADMINS = ["baisahukam.29@gmail.com"]; // add more if needed
 
     // UI refs
     const loginCard = document.getElementById('loginCard');
@@ -244,11 +261,12 @@
     lightboxClose.onclick = closeLightbox; lightbox.onclick=(e)=>{ if(e.target===lightbox) closeLightbox(); };
 
     // Firebase
-    let app, auth, db;
+    let app, auth, db, storage;
     try {
       app = initializeApp(firebaseConfig);
       auth = getAuth(app);
       db = getFirestore(app);
+      storage = getStorage(app);
     } catch (e) {
       loginMsg.textContent = "Firebase: Error (invalid config).";
       console.error(e);
@@ -267,14 +285,22 @@
       }
     });
 
-    btnLogin.onclick = async ()=>{
+    // New Login Code
+    btnLogin.onclick = async () => {
       loginMsg.textContent = "";
-      try{
-        await signInWithEmailAndPassword(auth, loginEmail.value.trim(), loginPass.value);
-      }catch(err){
-        loginMsg.textContent = err.message.replace('Firebase:','').trim();
+      const email = (loginEmail.value || "").trim();
+      const pass = loginPass.value || "";
+      if (!email || !pass) {
+        loginMsg.textContent = "Enter email and password.";
+        return;
+      }
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch (err) {
+        loginMsg.textContent = "Login failed. Please try again."; // Generic error message
       }
     };
+
     btnLogout.onclick = ()=> signOut(auth);
 
     // ===== CATEGORIES =====
@@ -297,7 +323,6 @@
           </div>
         </li>`).join('') || `<li class="py-4 text-center text-gray-400">No categories yet.</li>`;
 
-      // bind
       catList.querySelectorAll('[data-edit]').forEach(btn=>{
         btn.onclick = ()=>{ catId.value = btn.dataset.edit; catName.value = btn.dataset.name; catName.focus(); };
       });
@@ -333,7 +358,8 @@
     const prodDesc = document.getElementById('prodDesc');
     const prodMRP = document.getElementById('prodMRP');
     const prodPrice = document.getElementById('prodPrice');
-    const prodImages = document.getElementById('prodImages');
+    const prodStock = document.getElementById('prodStock');
+    const prodFiles = document.getElementById('prodFiles');
     const prodMsg = document.getElementById('prodMsg');
     const prodList = document.getElementById('prodList');
 
@@ -349,9 +375,10 @@
       const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
       prodList.innerHTML = items.map(p=>{
         const img = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1542718610-a1d656d1884b?auto=format&fit=crop&w=600&q=60';
+        const stock = (p.stock===0) ? `<span class="ml-2 text-xs font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded">Stock Not Available</span>` : '';
         return `<div class="bg-white rounded-xl shadow p-3">
           <img src="${img}" class="w-full h-40 object-cover rounded cursor-zoom-in" onclick="(${openLightbox})(this.src)">
-          <div class="mt-2 font-semibold text-rose-800">${p.name}</div>
+          <div class="mt-2 font-semibold text-rose-800">${p.name}${stock}</div>
           <div class="text-sm text-gray-600">₹<s>${Number(p.mrp||0).toLocaleString()}</s> <span class="text-rose-700 font-bold">₹${Number(p.price||0).toLocaleString()}</span></div>
           <div class="flex gap-2 mt-2">
             <button class="px-3 py-1 bg-rose-100 text-rose-700 rounded" data-editp='${JSON.stringify(p).replace(/"/g,'&quot;')}'><i class="fa fa-pen"></i></button>
@@ -369,7 +396,7 @@
           prodDesc.value = p.description||'';
           prodMRP.value = p.mrp||'';
           prodPrice.value = p.price||'';
-          prodImages.value = (p.images||[]).join(', ');
+          prodStock.value = String(p.stock??1);
           window.scrollTo({top:prodForm.offsetTop-80, behavior:'smooth'});
         };
       });
@@ -380,6 +407,20 @@
       });
     }
 
+    async function uploadProductImages(prodDocId){
+      const files = Array.from(prodFiles.files||[]);
+      if(files.length===0) return [];
+      const urls = [];
+      for(const f of files){
+        const key = `products/${prodDocId}/${Date.now()}_${f.name}`;
+        const rf = ref(storage, key);
+        await uploadBytes(rf, f);
+        const url = await getDownloadURL(rf);
+        urls.push(url);
+      }
+      return urls;
+    }
+
     prodForm.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const payload = {
@@ -388,26 +429,46 @@
         description: prodDesc.value.trim(),
         mrp: Number(prodMRP.value||0),
         price: Number(prodPrice.value||0),
-        images: prodImages.value.split(',').map(s=>s.trim()).filter(Boolean)
+        stock: Number(prodStock.value||1),
+        images: [] // will fill after upload
       };
+      if(!payload.name || !payload.categoryId){ prodMsg.textContent='Fill name & category.'; return; }
       try{
         if(prodId.value){
+          // keep existing, then merge uploads
           await updateDoc(doc(db,'products',prodId.value), payload);
+          const urls = await uploadProductImages(prodId.value);
+          if(urls.length){
+            const dref = doc(db,'products',prodId.value);
+            const snap = await getDocs(collection(db,'products')); // quick way to get existing; or fetch single if needed
+          }
+          // fetch single and merge images
+          // better: read, merge, update
+          // reading single doc:
+          // (simple approach: overwrite images with new uploads if provided, else keep old)
+          if((prodFiles.files||[]).length){
+            // overwrite images entirely with new uploads
+            await updateDoc(doc(db,'products',prodId.value), { images: await uploadProductImages(prodId.value) });
+          }
           prodMsg.textContent = 'Product updated.';
         } else {
-          await addDoc(collection(db,'products'), payload);
+          // create empty to obtain id
+          const refDoc = await addDoc(collection(db,'products'), { ...payload, images: [] });
+          const urls = await uploadProductImages(refDoc.id);
+          await updateDoc(doc(db,'products',refDoc.id), { images: urls });
           prodMsg.textContent = 'Product added.';
         }
         prodForm.reset(); setTimeout(()=>prodMsg.textContent='',1500);
         loadProducts();
-      }catch(err){ prodMsg.textContent = err.message; }
+      }catch(err){ console.error(err); prodMsg.textContent = err.message; }
     });
 
     // ===== GALLERY =====
     const galForm = document.getElementById('galForm');
     const galId = document.getElementById('galId');
     const galType = document.getElementById('galType');
-    const galUrl = document.getElementById('galUrl');
+    const galFile = document.getElementById('galFile');
+    const galComment = document.getElementById('galComment');
     const galMsg = document.getElementById('galMsg');
     const galList = document.getElementById('galList');
 
@@ -417,11 +478,12 @@
       const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
       galList.innerHTML = items.map(m=>{
         const preview = m.type==='video'
-          ? `<video class="w-full h-40 object-cover rounded" controls><source src="${m.url}" type="video/mp4"></video>`
+          ? `<video class="w-full h-40 object-contain rounded bg-black" controls><source src="${m.url}" type="video/mp4"></video>`
           : `<img src="${m.url}" class="w-full h-40 object-cover rounded cursor-zoom-in" onclick="(${openLightbox})(this.src)">`;
+        const comment = m.comment ? `<div class="text-xs text-gray-600 mt-1">${m.comment}</div>` : '';
         return `<div class="bg-white rounded-xl shadow p-3">
           ${preview}
-          <div class="mt-2 text-sm text-gray-600">${m.type.toUpperCase()}</div>
+          ${comment}
           <div class="flex gap-2 mt-2">
             <button class="px-3 py-1 bg-rose-100 text-rose-700 rounded" data-editg='${JSON.stringify(m).replace(/"/g,'&quot;')}'><i class="fa fa-pen"></i></button>
             <button class="px-3 py-1 bg-red-100 text-red-700 rounded" data-delg="${m.id}"><i class="fa fa-trash"></i></button>
@@ -432,26 +494,49 @@
       galList.querySelectorAll('[data-editg]').forEach(btn=>{
         btn.onclick = ()=>{
           const m = JSON.parse(btn.dataset.editg);
-          galId.value = m.id; galType.value = m.type; galUrl.value = m.url;
+          galId.value = m.id; galType.value = m.type; galComment.value = m.comment||'';
           window.scrollTo({top:galForm.offsetTop-80, behavior:'smooth'});
         };
       });
       galList.querySelectorAll('[data-delg]').forEach(btn=>{
         btn.onclick = async()=>{
-          if(confirm('Delete this item?')){ await deleteDoc(doc(db,'gallery',btn.dataset.delg)); loadGallery(); }
+          if(confirm('Delete this item?')){
+            // No storage path saved; skipping storage delete for simplicity
+            await deleteDoc(doc(db,'gallery',btn.dataset.delg));
+            loadGallery();
+          }
         };
       });
     }
 
+    async function uploadGalleryFile(type){
+      const file = galFile.files && galFile.files[0];
+      if(!file){ throw new Error('Please choose a file'); }
+      const key = `gallery/${Date.now()}_${file.name}`;
+      const rf = ref(storage, key);
+      await uploadBytes(rf, file);
+      return await getDownloadURL(rf);
+    }
+
     galForm.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const payload = { type: galType.value, url: galUrl.value.trim() };
       try{
+        const type = galType.value;
+        let url = null;
         if(galId.value){
+          // update metadata only (if new file chosen, upload & replace)
+          if(galFile.files && galFile.files.length){
+            url = await uploadGalleryFile(type);
+          }
+          const payload = { type, comment: galComment.value.trim() };
+          if(url) payload.url = url;
           await updateDoc(doc(db,'gallery',galId.value), payload);
           galMsg.textContent = 'Item updated.';
         } else {
-          await addDoc(collection(db,'gallery'), payload);
+          url = await uploadGalleryFile(type);
+          await addDoc(collection(db,'gallery'), {
+            type, url, comment: galComment.value.trim(), createdAt: serverTimestamp()
+          });
           galMsg.textContent = 'Item added.';
         }
         galForm.reset(); setTimeout(()=>galMsg.textContent='',1500);
@@ -459,15 +544,50 @@
       }catch(err){ galMsg.textContent = err.message; }
     });
 
+    // ===== ORDERS (Manage Customer Orders) =====
+    const ordersTbody = document.getElementById('ordersTbody');
+    const ordersMsg = document.getElementById('ordersMsg');
+
+    async function loadOrders(){
+      ordersTbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-gray-400">Loading...</td></tr>`;
+      const qRef = query(collection(db,'orders'), orderBy('createdAt','desc'));
+      const snap = await getDocs(qRef);
+      const items = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      if(!items.length){ ordersTbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-gray-400">No orders yet.</td></tr>`; return; }
+      ordersTbody.innerHTML = items.map(o=>{
+        const d = o.createdAt?.toDate ? o.createdAt.toDate() : null;
+        const dateStr = d ? d.toLocaleDateString()+' '+d.toLocaleTimeString() : '-';
+        return `<tr class="border-b">
+          <td class="px-3 py-2">${dateStr}</td>
+          <td class="px-3 py-2">${o.name||'-'}</td>
+          <td class="px-3 py-2">${o.phone||'-'}</td>
+          <td class="px-3 py-2">${o.address||'-'}</td>
+          <td class="px-3 py-2">${o.productName||'-'}</td>
+          <td class="px-3 py-2">₹${Number(o.price||0).toLocaleString()}</td>
+          <td class="px-3 py-2">₹${Number(o.finalPrice||o.price||0).toLocaleString()}</td>
+          <td class="px-3 py-2">${o.discountApplied ? '<span class="text-green-700 font-semibold">20% OFF</span>' : '-'}</td>
+          <td class="px-3 py-2">
+            <button class="px-2 py-1 bg-red-100 text-red-700 rounded" data-delorder="${o.id}"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>`;
+      }).join('');
+
+      // Delete binding
+      ordersTbody.querySelectorAll('[data-delorder]').forEach(btn=>{
+        btn.onclick = async ()=>{
+          if(confirm('Delete this order?')){ await deleteDoc(doc(db,'orders',btn.dataset.delorder)); loadOrders(); }
+        };
+      });
+    }
+
     // Refresh all lists
     async function refreshAll(){
       await loadCategories();
       await loadProdCats();
       await loadProducts();
       await loadGallery();
+      await loadOrders();
     }
   </script>
 </body>
 </html>
-
-
