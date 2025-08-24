@@ -17,6 +17,7 @@
     .category-card{transition:.3s}
     .category-card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,.1)}
     .thumb-active{outline:2px solid #be123c}
+    .truncate-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     @media (max-width:640px){
       video{max-height:240px}
       .video-background{height:50vh}
@@ -26,13 +27,11 @@
 </head>
 <body class="bg-gradient-to-b from-pink-50 via-pink-100 to-pink-200 min-h-screen flex flex-col font-sans text-gray-800">
 
-
   <!-- WhatsApp Floating Button -->
   <a href="https://wa.me/918830304067?text=Hello%20baisahukam.29%20team,%20I%20would%20like%20to%20know%20more%20about%20your%20products"
      class="whatsapp-float" target="_blank" aria-label="Contact us on WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
-
 
   <!-- Header/Nav -->
   <header class="bg-white shadow sticky top-0 z-50">
@@ -73,7 +72,6 @@
     </nav>
   </header>
 
-
   <!-- Video Background Section -->
   <section id="explore-collections" class="video-background">
     <video autoplay muted loop playsinline>
@@ -87,22 +85,14 @@
     </div>
   </section>
 
-
   <!-- Collections -->
   <section id="collections" class="container mx-auto px-4 py-6">
     <h3 class="text-4xl font-extrabold text-rose-800 mb-12 text-center border-b-4 border-rose-600 inline-block pb-3">Our Royal Collections</h3>
-
-
-    <div id="categoryList" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-      <!-- categories rendered here -->
-    </div>
-
-
+    <div id="categoryList" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10"></div>
     <!-- Products -->
     <div id="productsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8"></div>
     <p id="noProductsMsg" class="mt-8 text-center text-pink-700 font-semibold text-lg">Select a collection category to view products</p>
   </section>
-
 
   <!-- About -->
   <section id="about-us" class="bg-rose-50 py-16 px-4">
@@ -130,21 +120,28 @@
     </div>
   </section>
 
-
   <!-- Customer Gallery -->
   <section id="customer-media" class="container mx-auto px-4 py-16 max-w-7xl">
     <h3 class="text-4xl font-extrabold text-rose-800 mb-8 text-center border-b-4 border-rose-600 inline-block pb-3">Customer Gallery</h3>
     <p class="italic text-lg mb-12 text-pink-700 text-center max-w-2xl mx-auto">Photos and videos shared by our cherished customers.</p>
-    <div id="customerMediaGallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-    <p id="noCustomerMedia" class="mt-12 text-center text-pink-700 font-semibold text-lg hidden">No customer media yet.</p>
+    <div class="grid md:grid-cols-2 gap-4 mb-8">
+      <div class="bg-white rounded-xl shadow p-4">
+        <h4 class="font-semibold text-rose-800 mb-2"><i class="fa fa-image mr-2"></i>Images</h4>
+        <div id="customerMediaGalleryImages" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+      </div>
+      <div class="bg-white rounded-xl shadow p-4">
+        <h4 class="font-semibold text-rose-800 mb-2"><i class="fa fa-video mr-2"></i>Videos</h4>
+        <div id="customerMediaGalleryVideos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+    </div>
+    <p id="noCustomerMedia" class="mt-6 text-center text-pink-700 font-semibold text-lg hidden">No customer media yet.</p>
   </section>
-
 
   <!-- Purchase -->
   <section id="purchase" class="bg-white py-16 px-4">
     <div class="container mx-auto max-w-3xl">
-      <h3 class="text-4xl font-extrabold text-rose-800 mb-8 text-center border-b-4 border-rose-600 inline-block pb-3">Purchase Your Favorite Poshak</h3>
-
+      <h3 class="text-4xl font-extrabold text-rose-800 mb-2 text-center border-b-4 border-rose-600 inline-block pb-3">Purchase Your Favorite Poshak</h3>
+      <p class="text-center text-green-700 font-semibold mb-6"><i class="fa fa-tag mr-1"></i>Get <strong>20% OFF</strong> on your first order!</p>
 
       <form id="purchaseForm" class="bg-rose-50 rounded-xl shadow-lg p-8 space-y-6" novalidate>
         <div>
@@ -153,15 +150,14 @@
             <option value="">-- Select a product --</option>
           </select>
           <p class="text-sm text-pink-700 mt-2" id="productPriceInfo"></p>
+          <p class="text-sm text-red-600 mt-1 hidden" id="outOfStockMsg"><i class="fa fa-circle-exclamation mr-1"></i>Stock Not Available</p>
         </div>
-
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="customerName" class="block font-semibold text-rose-700 mb-2 text-lg">Full Name</label>
             <input type="text" id="customerName" required placeholder="Your full name" class="w-full border border-rose-400 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600 focus:outline-none focus:border-rose-600"/>
           </div>
-
 
           <div>
             <label for="customerPhone" class="block font-semibold text-rose-700 mb-2 text-lg">Phone Number</label>
@@ -170,12 +166,10 @@
           </div>
         </div>
 
-
         <div>
           <label for="customerAddress" class="block font-semibold text-rose-700 mb-2 text-lg">Delivery Address</label>
           <textarea id="customerAddress" rows="4" required placeholder="Your complete delivery address with pincode" class="w-full border border-rose-400 rounded-lg px-4 py-3 focus:ring-2 focus:ring-rose-600 focus:outline-none focus:border-rose-600"></textarea>
         </div>
-
 
         <div>
           <label class="block font-semibold text-rose-700 mb-3 text-lg">Payment Method</label>
@@ -191,26 +185,22 @@
           </div>
         </div>
 
-
         <div id="gpayNumberInfo" class="p-6 bg-rose-100 border-2 border-rose-300 rounded-lg text-rose-800 hidden">
           <p class="font-semibold mb-2"><i class="fas fa-mobile-alt mr-2"></i>Send payment to G Pay Number:</p>
           <p id="gpayNumber" class="font-mono text-xl bg-white p-3 rounded border border-rose-400">+91 8830304067</p>
         </div>
 
-
         <div id="gpayScannerInfo" class="p-6 bg-rose-100 border-2 border-rose-300 rounded-lg flex justify-center items-center hidden">
           <img src="gpay_scanner.jpg" alt="G Pay QR Code" class="rounded-lg shadow-md w-48 h-48 object-contain"/>
         </div>
 
-
-        <button type="submit" class="w-full bg-rose-700 hover:bg-rose-800 text-white font-bold py-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 focus:ring-4 focus:ring-rose-300 focus:outline-none text-lg">
+        <button type="submit" id="placeOrderBtn" class="w-full bg-rose-700 hover:bg-rose-800 text-white font-bold py-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 focus:ring-4 focus:ring-rose-300 focus:outline-none text-lg disabled:opacity-60 disabled:cursor-not-allowed">
           <i class="fas fa-shopping-bag mr-2"></i>Place Order
         </button>
         <p id="purchaseMessage" class="mt-4 text-center font-semibold text-green-700 text-lg hidden"></p>
       </form>
     </div>
   </section>
-
 
   <!-- Shipping Policy -->
   <section id="shipping" class="bg-rose-50 py-16 px-4">
@@ -258,7 +248,6 @@
           </div>
         </div>
 
-
         <div class="mt-8 p-6 bg-rose-100 rounded-lg border-l-4 border-rose-600">
           <h5 class="text-xl font-semibold text-rose-800 mb-3"><i class="fas fa-exclamation-circle mr-2"></i>Important Instructions</h5>
           <p class="text-pink-700 mb-4">
@@ -275,7 +264,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- Footer -->
   <footer id="contact" class="bg-rose-800 text-rose-50 py-16 px-4 mt-auto">
@@ -316,57 +304,38 @@
           </a>
         </div>
       </div>
-      <div class="mt-10 text-center text-rose-200 text-sm">© 2020 baisahukam.29 · All rights reserved</div>
+      <div class="mt-10 text-center text-rose-200 text-sm">© <span id="year">2020</span> baisahukam.29 · All rights reserved</div>
     </div>
   </footer>
-
 
   <!-- Lightbox Modal -->
   <div id="lightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[60] p-4">
     <button id="lightboxClose" class="absolute top-4 right-4 text-white text-3xl">&times;</button>
-    <div class="max-w-4xl w-full">
-      <img id="lightboxImg" src="" alt="" class="w-full h-auto rounded-lg shadow-2xl">
+    <div class="relative max-w-4xl w-full">
+      <img id="lightboxImg" src="" alt="" class="w-full h-auto rounded-lg shadow-2xl object-contain max-h-[80vh] bg-black"/>
+      <button id="prevImg" class="absolute left-2 top-1/2 -translate-y-1/2 text-white text-3xl bg-black/40 rounded-full px-3 py-1">&#10094;</button>
+      <button id="nextImg" class="absolute right-2 top-1/2 -translate-y-1/2 text-white text-3xl bg-black/40 rounded-full px-3 py-1">&#10095;</button>
     </div>
   </div>
 
-
-  <!-- Firebase SDK (for reading public data) -->
+  <!-- Firebase SDK (public read & orders write) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, where, addDoc, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyDYvcJWPbAm_JmxdC1FsrNVHErGE2BRaq4",
+      authDomain: "baisahukam29-671b7.firebaseapp.com",
+      projectId: "baisahukam29-671b7",
+      storageBucket: "baisahukam29-671b7.firebasestorage.app",
+      messagingSenderId: "739170617453",
+      appId: "1:739170617453:web:a18d21c5bd083fc8dcd764",
+      measurementId: "G-6DSMPFB7CF"
+    };
 
-    // ======= PASTE YOUR REAL CONFIG HERE (Firebase Console → SDK setup → Config) =======
-    // const firebaseConfig = {
-    //   apiKey: "YOUR_API_KEY",
-    //   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    //   projectId: "YOUR_PROJECT_ID",
-    //   storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    //   messagingSenderId: "SENDER_ID",
-    //   appId: "APP_ID",
-    //   measurementId: "G-XXXX"
-    // };
-    // ====================================================================================
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDYvcJWPbAm_JmxdC1FsrNVHErGE2BRaq4",
-  authDomain: "baisahukam29-671b7.firebaseapp.com",
-  projectId: "baisahukam29-671b7",
-  storageBucket: "baisahukam29-671b7.firebasestorage.app",
-  messagingSenderId: "739170617453",
-  appId: "1:739170617453:web:a18d21c5bd083fc8dcd764",
-  measurementId: "G-6DSMPFB7CF"
-};
-    // Init Firebase
     let app, db;
-    try {
-      app = initializeApp(firebaseConfig);
-      db = getFirestore(app);
-    } catch (e) {
-      console.warn("Firebase init skipped (no config). Showing local samples.", e);
-    }
-
+    try { app = initializeApp(firebaseConfig); db = getFirestore(app); }
+    catch (e) { console.warn("Firebase init skipped (no config). Showing local samples.", e); }
 
     // Elements
     const categoryList = document.getElementById('categoryList');
@@ -374,62 +343,58 @@ const firebaseConfig = {
     const noProductsMsg = document.getElementById('noProductsMsg');
     const purchaseProduct = document.getElementById('purchaseProduct');
     const productPriceInfo = document.getElementById('productPriceInfo');
-    const mediaGallery = document.getElementById('customerMediaGallery');
+    const outOfStockMsg = document.getElementById('outOfStockMsg');
+    const galleryImages = document.getElementById('customerMediaGalleryImages');
+    const galleryVideos = document.getElementById('customerMediaGalleryVideos');
 
-
-    // Lightbox
+    // Lightbox carousel state
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
     const lightboxClose = document.getElementById('lightboxClose');
-    const openLightbox = (src) => { lightboxImg.src = src; lightbox.classList.remove('hidden'); lightbox.classList.add('flex'); };
-    const closeLightbox = () => { lightbox.classList.add('hidden'); lightbox.classList.remove('flex'); lightboxImg.src=""; };
+    const prevImgBtn = document.getElementById('prevImg');
+    const nextImgBtn = document.getElementById('nextImg');
+    let currentImages = [];
+    let currentIndex = 0;
+    const openLightboxAt = (arr, i=0)=>{ currentImages = arr; currentIndex = i; lightboxImg.src = currentImages[currentIndex]; lightbox.classList.remove('hidden'); lightbox.classList.add('flex'); };
+    const showPrev = ()=>{ if(!currentImages.length) return; currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; lightboxImg.src = currentImages[currentIndex]; };
+    const showNext = ()=>{ if(!currentImages.length) return; currentIndex = (currentIndex + 1) % currentImages.length; lightboxImg.src = currentImages[currentIndex]; };
+    const closeLightbox = ()=>{ lightbox.classList.add('hidden'); lightbox.classList.remove('flex'); currentImages=[]; currentIndex=0; lightboxImg.src=""; };
     lightboxClose.onclick = closeLightbox; lightbox.onclick = (e)=>{ if(e.target===lightbox) closeLightbox(); };
-
+    prevImgBtn.onclick = showPrev; nextImgBtn.onclick = showNext;
 
     // Render helpers
-    function categoryChip(cat){
-      return `<div data-cat="${cat.id || cat.slug}" class="category-card bg-white rounded-xl shadow-lg p-4 cursor-pointer hover:shadow-xl">
+    const categoryChip = (cat)=>`
+      <div data-cat="${cat.id || cat.slug}" class="category-card bg-white rounded-xl shadow-lg p-4 cursor-pointer hover:shadow-xl">
         <h4 class="text-2xl font-bold text-rose-800 text-center">${cat.name}</h4>
       </div>`;
-    }
 
-
-    function productCard(p){
-      const firstImg = (p.images && p.images[0]) || "https://images.unsplash.com/photo-1542718610-a1d656d1884b?auto=format&fit=crop&w=600&q=60";
-      const thumbs = (p.images || []).map((u,i)=>`<img data-idx="${i}" src="${u}" class="w-14 h-14 object-cover rounded cursor-pointer ${i===0?'thumb-active':''}">`).join('');
+    const productCard = (p)=>{
+      const imgs = p.images || [];
+      const firstImg = imgs[0] || "https://images.unsplash.com/photo-1542718610-a1d656d1884b?auto=format&fit=crop&w=600&q=60";
+      const thumbs = imgs.map((u,i)=>`<img data-idx="${i}" src="${u}" class="w-14 h-14 object-cover rounded cursor-pointer ${i===0?'thumb-active':''}">`).join('');
+      const stockBadge = (p.stock===0) ? `<span class="ml-2 text-xs font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded">Stock Not Available</span>` : '';
       return `<div class="bg-white rounded-xl shadow-lg p-3 flex flex-col">
-        <div class="relative">
-          <img src="${firstImg}" alt="${p.name}" class="w-full h-56 object-cover rounded-lg cursor-zoom-in product-main" data-images='${JSON.stringify(p.images || [])}'>
+        <div class="relative overflow-hidden rounded-lg">
+          <img src="${firstImg}" alt="${p.name}" class="w-full h-56 object-cover rounded-lg cursor-zoom-in product-main bg-white" data-images='${JSON.stringify(imgs)}'>
           <div class="absolute top-3 left-3 bg-rose-700 text-white text-xs px-2 py-1 rounded">Rajputi</div>
         </div>
         <div class="mt-3">
-          <h5 class="font-bold text-rose-800 text-lg">${p.name}</h5>
-          <p class="text-sm text-gray-600 line-clamp-2">${p.description || ''}</p>
+          <h5 class="font-bold text-rose-800 text-lg flex items-center">${p.name}${stockBadge}</h5>
+          <p class="text-sm text-gray-700 truncate-2" data-full="${p.description||''}">${p.description||''}</p>
+          <button class="mt-1 text-rose-700 text-sm underline readmore">Read more</button>
           <div class="flex items-center gap-2 mt-2">
             <span class="text-gray-400 line-through text-sm">₹${Number(p.mrp||0).toLocaleString()}</span>
             <span class="text-rose-700 font-extrabold text-xl">₹${Number(p.price||0).toLocaleString()}</span>
           </div>
-          <div class="flex gap-2 mt-3">${thumbs}</div>
+          <div class="flex gap-2 mt-3 flex-wrap">${thumbs}</div>
         </div>
       </div>`;
-    }
+    };
 
+    const mediaCardImage = (url)=>`<img src="${url}" class="w-full h-56 object-cover rounded cursor-zoom-in" onclick='(${()=>{}})();' data-open="${url}">`;
+    const mediaCardVideo = (url)=>`<video controls class="w-full h-56 object-contain rounded bg-black"><source src="${url}" type="video/mp4"/></video>`;
 
-    function mediaCard(m){
-      if(m.type === 'video'){
-        return `<div class="bg-white rounded-xl shadow-lg overflow-hidden">
-          <video controls class="w-full h-64 object-cover">
-            <source src="${m.url}" type="video/mp4"/>
-          </video>
-        </div>`;
-      }
-      return `<div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <img src="${m.url}" class="w-full h-64 object-cover cursor-zoom-in" onclick="(${openLightbox})(this.src)" />
-      </div>`;
-    }
-
-
-    // Local sample data (used if Firestore unavailable/empty)
+    // Local sample data (fallback)
     const sampleCategories = [
       { id: 'poshaks', name: 'RAJPUTI POSHAKS' },
       { id: 'jewellery', name: 'RAJPUTI JEWELLERY SETS' },
@@ -438,24 +403,12 @@ const firebaseConfig = {
     const sampleProduct = {
       id:'sample1',
       name:'BR0002 Bridal Rajputi Poshak – Red',
-      description:'NEW LAUNCHING HEAVY RED BRIDAL POSHAK Premium Quality Half PURE Fabric with Bright Red Colour Heavy Fancy Barik Fancy zari work and Hevy SAROSKI stone work Heavy Odhni Four side  work with Pallu work and Zaal work with Gotta Turri Heavy Kurti work with Galla and astin work With Astar and Aari Magji completeHandcrafted gotta-patti work with royal dupatta.',
+      description:'NEW LAUNCHING HEAVY RED BRIDAL POSHAK Premium Quality Half PURE Fabric ... royal dupatta.',
       categoryId:'poshaks',
-      images:[
-        'Br0002_1.jpg',
-        'Br0002_2.jpg',
-        'Br0002_3.jpg'
-      ],
-      mrp:9999, price:4999
+      images:['Br0002_1.jpg','Br0002_2.jpg','Br0002_3.jpg'],
+      mrp:9999, price:4999, stock: 5
     };
-    const sampleMedia = [
-      {type:'image', url:'img Customer.jpg'},
-      {type:'image', url:'img Customer3.jpg'},
-      {type:'video', url:'custmer.mp4'},
-      {type:'image', url:'img Customer2.jpg'}
-    ];
 
-
-    // Load categories
     async function loadCategories(){
       let cats = [];
       if(db){
@@ -464,16 +417,12 @@ const firebaseConfig = {
       }
       if(!cats.length){ cats = sampleCategories; }
       categoryList.innerHTML = cats.map(categoryChip).join('');
-      // default select first
       if(cats.length){ loadProducts(cats[0].id); }
-      // click
       categoryList.querySelectorAll('[data-cat]').forEach(el=>{
         el.addEventListener('click', ()=> loadProducts(el.dataset.cat));
       });
     }
 
-
-    // Load products by category
     async function loadProducts(catId){
       productsContainer.innerHTML = '';
       noProductsMsg.classList.add('hidden');
@@ -485,15 +434,30 @@ const firebaseConfig = {
       }
       if(!products.length && catId==='poshaks'){ products = [sampleProduct]; }
       if(!products.length){ noProductsMsg.classList.remove('hidden'); return; }
+
       productsContainer.innerHTML = products.map(productCard).join('');
-      // main image click -> lightbox (open selected)
+
+      // Read more toggle
+      productsContainer.querySelectorAll('.readmore').forEach(btn=>{
+        btn.addEventListener('click',(e)=>{
+          const p = e.target.previousElementSibling; // paragraph
+          if(p.classList.contains('truncate-2')){
+            p.classList.remove('truncate-2'); e.target.textContent = 'Show less';
+          } else {
+            p.classList.add('truncate-2'); e.target.textContent = 'Read more';
+          }
+        });
+      });
+
+      // Main image click -> lightbox carousel
       productsContainer.querySelectorAll('.product-main').forEach(img=>{
         img.addEventListener('click', ()=>{
           const arr = JSON.parse(img.dataset.images||'[]');
-          openLightbox(arr[0] || img.src);
+          openLightboxAt(arr.length?arr:[img.src], 0);
         });
       });
-      // thumbs switcher
+
+      // Thumbs click -> switch main & also open in lightbox on long click
       productsContainer.querySelectorAll('.bg-white .mt-3 .flex img').forEach(thumb=>{
         thumb.addEventListener('click', (e)=>{
           const card = e.target.closest('.bg-white');
@@ -506,36 +470,57 @@ const firebaseConfig = {
         });
       });
 
-
-      // fill Purchase dropdown
+      // Fill Purchase dropdown (disable out-of-stock items)
       purchaseProduct.innerHTML = `<option value="">-- Select a product --</option>` +
-        products.map(p=>`<option value="${p.id}" data-price="${p.price}" data-mrp="${p.mrp}">${p.name}</option>`).join('');
+        products.map(p=>{
+          const disabled = (p.stock===0) ? 'disabled' : '';
+          const stockLabel = (p.stock===0) ? ' (Out of stock)' : '';
+          return `<option value="${p.id}" data-name="${p.name}" data-price="${p.price}" data-mrp="${p.mrp}" data-stock="${p.stock||0}" ${disabled}>${p.name}${stockLabel}</option>`;
+        }).join('');
     }
 
-
-    // Load gallery
     async function loadGallery(){
-      let media = [];
+      let imgs=[], vids=[];
       if(db){
         const snap = await getDocs(collection(db,'gallery'));
-        media = snap.docs.map(d=>({id:d.id, ...d.data()}));
+        const all = snap.docs.map(d=>({id:d.id, ...d.data()}));
+        imgs = all.filter(m=>m.type==='image');
+        vids = all.filter(m=>m.type==='video');
       }
-      if(!media.length){ media = sampleMedia; }
-      mediaGallery.innerHTML = media.map(mediaCard).join('');
+      galleryImages.innerHTML = (imgs.length?imgs:[{url:'img Customer.jpg'},{url:'img Customer2.jpg'},{url:'img Customer3.jpg'}])
+        .map(m=>`<div class="overflow-hidden rounded-xl shadow bg-white p-1">
+          ${mediaCardImage(m.url)}
+        </div>`).join('');
+      galleryVideos.innerHTML = (vids.length?vids:[{url:'custmer.mp4'}])
+        .map(m=>`<div class="overflow-hidden rounded-xl shadow bg-white p-1">
+          ${mediaCardVideo(m.url)}
+        </div>`).join('');
+
+      // Image click to open lightbox (single)
+      galleryImages.querySelectorAll('[data-open]').forEach(img=>{
+        img.addEventListener('click', ()=> openLightboxAt([img.dataset.open],0));
+      });
+
+      // No media message
+      const none = (!galleryImages.children.length && !galleryVideos.children.length);
+      document.getElementById('noCustomerMedia').classList.toggle('hidden', !none);
     }
 
-
-    // Purchase info
+    // Purchase UI helpers
     purchaseProduct.addEventListener('change', (e)=>{
       const opt = e.target.selectedOptions[0];
+      const stock = Number(opt?.dataset.stock || 0);
+      const mrp = Number(opt?.dataset.mrp || 0);
+      const price = Number(opt?.dataset.price || 0);
       if(opt && opt.dataset.price){
-        productPriceInfo.innerHTML = `MRP: <span class="line-through">₹${Number(opt.dataset.mrp||0).toLocaleString()}</span> &nbsp;
-          Selling Price: <span class="text-rose-700 font-bold">₹${Number(opt.dataset.price).toLocaleString()}</span>`;
+        productPriceInfo.innerHTML = `MRP: <span class="line-through">₹${mrp.toLocaleString()}</span> &nbsp;
+          Selling Price: <span class="text-rose-700 font-bold">₹${price.toLocaleString()}</span>`;
       } else productPriceInfo.textContent = '';
+      outOfStockMsg.classList.toggle('hidden', stock>0);
+      document.getElementById('placeOrderBtn').disabled = (stock===0 || !opt?.value);
     });
 
-
-    // Payment method UI
+    // Payment toggle
     document.querySelectorAll('input[name="paymentMethod"]').forEach(r=>{
       r.addEventListener('change', ()=>{
         const v = document.querySelector('input[name="paymentMethod"]:checked')?.value;
@@ -544,37 +529,65 @@ const firebaseConfig = {
       });
     });
 
-
-    // Fake submit (you can wire to Firestore/Email later)
-    document.getElementById('purchaseForm').addEventListener('submit', (e)=>{
+    // Purchase submit: save order with 20% first-order discount
+    document.getElementById('purchaseForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
-      document.getElementById('purchaseMessage').textContent = 'Thank You! Send Payement Screenshot on Whatsapp no: 8830304067 To Confirm your Order.';
-      document.getElementById('purchaseMessage').classList.remove('hidden');
-      e.target.reset();
-      productPriceInfo.textContent = '';
-      document.getElementById('gpayNumberInfo').classList.add('hidden');
-      document.getElementById('gpayScannerInfo').classList.add('hidden');
+      const opt = purchaseProduct.selectedOptions[0];
+      if(!opt) return;
+      const productId = opt.value;
+      const productName = opt.dataset.name || opt.textContent;
+      const mrp = Number(opt.dataset.mrp||0);
+      const price = Number(opt.dataset.price||0);
+      const name = document.getElementById('customerName').value.trim();
+      const phone = document.getElementById('customerPhone').value.trim();
+      const address = document.getElementById('customerAddress').value.trim();
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+
+      if(!name || !phone || !address || !paymentMethod){ return; }
+
+      let finalPrice = price;
+      let discountApplied = false;
+
+      try{
+        // First order check by phone
+        if(db){
+          const qRef = query(collection(db,'orders'), where('phone','==',phone), limit(1));
+          const snap = await getDocs(qRef);
+          if(snap.empty){
+            discountApplied = true;
+            finalPrice = Math.round(price * 0.8); // 20% OFF
+          }
+          await addDoc(collection(db,'orders'), {
+            productId, productName, mrp, price, finalPrice, discountApplied,
+            name, phone, address, paymentMethod,
+            createdAt: serverTimestamp()
+          });
+        }
+        const msg = discountApplied
+          ? `Order placed! First-order discount applied. Pay ₹${finalPrice.toLocaleString()} and WhatsApp the screenshot to 8830304067.`
+          : `Order placed! Pay ₹${finalPrice.toLocaleString()} and WhatsApp the screenshot to 8830304067.`;
+        const el = document.getElementById('purchaseMessage');
+        el.textContent = msg; el.classList.remove('hidden'); el.classList.remove('text-red-600'); el.classList.add('text-green-700');
+        e.target.reset();
+        productPriceInfo.textContent = '';
+        document.getElementById('gpayNumberInfo').classList.add('hidden');
+        document.getElementById('gpayScannerInfo').classList.add('hidden');
+      }catch(err){
+        const el = document.getElementById('purchaseMessage');
+        el.textContent = 'Failed to place order. Please try again.';
+        el.classList.remove('hidden'); el.classList.remove('text-green-700'); el.classList.add('text-red-600');
+        console.error(err);
+      }
     });
 
-
-    // Mobile menu
+    // Mobile menu + Year
     document.getElementById('mobileMenuBtn').onclick = ()=> document.getElementById('mobileMenu').classList.toggle('hidden');
     document.getElementById('year').textContent = new Date().getFullYear();
 
-
-    // Init data
+    // Init
     await loadCategories();
     await loadProducts('poshaks');
     await loadGallery();
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
