@@ -437,15 +437,15 @@ const firebaseConfig = {
     ];
     const sampleProduct = {
       id:'sample1',
-      name:'Bridal Rajputi Poshak – Maroon',
-      description:'Handcrafted gotta-patti work with royal dupatta.',
+      name:'BR0002 Bridal Rajputi Poshak – Red',
+      description:'NEW LAUNCHING HEAVY RED BRIDAL POSHAK Premium Quality Half PURE Fabric with Bright Red Colour Heavy Fancy Barik Fancy zari work and Hevy SAROSKI stone work Heavy Odhni Four side  work with Pallu work and Zaal work with Gotta Turri Heavy Kurti work with Galla and astin work With Astar and Aari Magji completeHandcrafted gotta-patti work with royal dupatta.',
       categoryId:'poshaks',
       images:[
         'https://images.unsplash.com/photo-1602091742256-9e3d1a40add3?auto=format&fit=crop&w=1200&q=60',
         'https://images.unsplash.com/photo-1520975922236-27c36d1a5b3a?auto=format&fit=crop&w=1200&q=60',
         'https://images.unsplash.com/photo-1611652022419-1a1007a7a2c7?auto=format&fit=crop&w=1200&q=60'
       ],
-      mrp:14999, price:10999
+      mrp:9999, price:4999
     };
     const sampleMedia = [
       {type:'image', url:'https://images.unsplash.com/photo-1611652022420-6e9fae1c2f0a?auto=format&fit=crop&w=1200&q=60'},
@@ -548,7 +548,7 @@ const firebaseConfig = {
     // Fake submit (you can wire to Firestore/Email later)
     document.getElementById('purchaseForm').addEventListener('submit', (e)=>{
       e.preventDefault();
-      document.getElementById('purchaseMessage').textContent = 'Thank You.Send Payement Screenshot on Whatsapp no: 8830304067 To Confirm your Order.';
+      document.getElementById('purchaseMessage').textContent = 'Thank You! Send Payement Screenshot on Whatsapp no: 8830304067 To Confirm your Order.';
       document.getElementById('purchaseMessage').classList.remove('hidden');
       e.target.reset();
       productPriceInfo.textContent = '';
@@ -569,6 +569,7 @@ const firebaseConfig = {
   </script>
 </body>
 </html>
+
 
 
 
